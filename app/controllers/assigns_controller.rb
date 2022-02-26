@@ -22,12 +22,15 @@ class AssignsController < ApplicationController
   end
 
   private
+
   def assign_params
     params[:email]
   end
 
   def assign_destroy(assign, assigned_user)
-    if assigned_user == assign.team.owner
+    if [assigned_user, assign.team.owner].exclude?(current_user)
+      I18n.t('views.messages.cannot_delete_the_member')
+    elsif assigned_user == assign.team.owner
       I18n.t('views.messages.cannot_delete_the_leader')
     elsif Assign.where(user_id: assigned_user.id).count == 1
       I18n.t('views.messages.cannot_delete_only_a_member')
@@ -63,6 +66,6 @@ class AssignsController < ApplicationController
   end
 
   def find_team(team_id)
-    Team.friendly.find(params[:team_id])
+    Team.friendly.find(team_id)
   end
 end
