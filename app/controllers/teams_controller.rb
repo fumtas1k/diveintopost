@@ -51,6 +51,7 @@ class TeamsController < ApplicationController
   def transfer_owner
     assign_user = Assign.find(params[:assign_id]).user
     if @team.update(owner_id: assign_user.id)
+      TeamMailer.transfer_owner_mail(current_user, assign_user, @team).deliver
       redirect_to @team, notice: "#{assign_user.email}に#{I18n.t('views.messages.transfer_team_owner')}"
     else
       redirect_back fallback_location: @team, notice: I18n.t('views.messages.failed_to_transfer_team_owner')
