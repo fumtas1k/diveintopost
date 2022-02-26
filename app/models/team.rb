@@ -1,7 +1,7 @@
 class Team < ApplicationRecord
   include FriendlyId
   friendly_id :name
-
+  after_create_commit :owner_joins_this_team
   validates :name, presence: true, uniqueness: true
 
   belongs_to :owner, class_name: 'User', foreign_key: :owner_id
@@ -14,5 +14,9 @@ class Team < ApplicationRecord
 
   def invite_member(user)
     assigns.create(user: user)
+  end
+
+  def owner_joins_this_team
+    invite_member(self.owner)
   end
 end

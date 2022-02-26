@@ -22,7 +22,7 @@ class TeamsController < ApplicationController
     @team = Team.new(team_params)
     @team.owner = current_user
     if @team.save
-      @team.invite_member(@team.owner)
+      # @team.invite_member(@team.owner) # teamモデルのコールバックに設定したためコメントアウト
       redirect_to @team, notice: I18n.t('views.messages.create_team')
     else
       flash.now[:error] = I18n.t('views.messages.failed_to_save_team')
