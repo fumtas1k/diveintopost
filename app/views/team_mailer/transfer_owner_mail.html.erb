@@ -1,0 +1,5 @@
+<h1>Dear <%= @new_owner.email %>,</h1>
+
+<p>
+  <%= "#{@team.name}#{I18n.t('views.messages.transfer_owner_mail1')}#{@old_owner.email}#{I18n.t('views.messages.transfer_owner_mail2')}" %>
+</p>
