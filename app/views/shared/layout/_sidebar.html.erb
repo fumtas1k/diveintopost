@@ -30,13 +30,15 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <% @working_team.agendas.each do |agenda| %>
           <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link agenda-title-wrapper">
               <i class="fa fa-circle-o nav-icon"></i>
-              <p>
+              <p class="agenda-title">
                 <%= agenda.title %>
                 <i class="right fa fa-angle-left"></i>
               </p>
             </a>
+            <%= link_to t("views.button.delete_short"), agenda_path(agenda), method: :delete, class: "btn btn-outline-light"%>
+            <div class="float-reset"></div>
             <ul class="nav nav-treeview" style="display: block;">
               <% agenda.articles.each do |article| %>
                 <li class="nav-item">
