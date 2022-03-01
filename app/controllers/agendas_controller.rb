@@ -21,6 +21,20 @@ class AgendasController < ApplicationController
     end
   end
 
+  def destroy
+    agenda = Agenda.find(params[:id])
+    team = agenda.team
+    if [agenda.user, team.owner].include?(current_user)
+      agenda.destroy
+      redirect_to dashboard_path, notice: "#{agenda.title}#{I18n.t('views.messages.delete_agenda_message')}"
+      team.members.each do |member|
+        TeamMailer.delete_agenda_mail(member, agenda.title, team).deliver_later
+      end
+    else
+      redirect_back fallback_location: root_path, notice: I18n.t("views.messages.cannot_delete_agenda")
+    end
+  end
+
   private
 
   def set_agenda
